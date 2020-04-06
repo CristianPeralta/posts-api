@@ -15,3 +15,11 @@ CREATE TABLE posts (
     author VARCHAR REFERENCES users(username),
     data_created DATE
 );
+
+CREATE TABLE comments (
+    cid SERIAL PRIMARY KEY,
+    comment VARCHAR(255),
+    author VARCHAR REFERENCES users(username),
+    user_id INT REFERENCES users(uid),
+    data_created DATE
+);
