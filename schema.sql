@@ -8,7 +8,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE posts (
-    uid SERIAL PRIMARY KEY,
+    pid SERIAL PRIMARY KEY,
     title VARCHAR(255),
     body VARCHAR,
     user_id INT REFERENCES users(uid),
@@ -20,6 +20,7 @@ CREATE TABLE comments (
     cid SERIAL PRIMARY KEY,
     comment VARCHAR(255),
     author VARCHAR REFERENCES users(username),
+    post_id INT REFERENCES posts(pid),
     user_id INT REFERENCES users(uid),
     data_created DATE
 );
