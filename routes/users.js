@@ -10,4 +10,13 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.post('/', (req, res, next) => {
+  const { nickname, email, emailVerified } = req.body;
+  pool.query(`INSERT INTO users(username, email, email_verified, date_created)
+      VALUES(${nickname}, ${email}, ${emailVerified}, NOW()) ON CONFLICT DO NOTHING`, [], (err, resp) => {
+          if (err) return next(err);
+          res.json(resp.rows);
+  });
+});
+
 module.exports = router;
