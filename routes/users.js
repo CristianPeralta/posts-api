@@ -3,7 +3,11 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  const email = String(req.query.email);
+  pool.query(`SELECT * FROM users WHERE email=${email}`, [], (err, resp) => {
+    if (err) return next(err);
+    res.json(resp.rows);
+  });
 });
 
 module.exports = router;
