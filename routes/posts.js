@@ -43,6 +43,16 @@ router.post('/comments', (req, res, next) => {
     });
 });
 
+router.put('/comments', (req, res, next) => {
+    const { cid, postId, comment, userId, username } = req.body;
+    pool.query(`UPDATE comments SET
+        comment=${comment}, user_id=${userId}, post_id=${postId} author=${username}, date_created=NOW())
+        WHERE cid=${cid}`, [], (err, resp) => {
+            if (err) return next(err);
+            res.json(resp.rows);
+    });
+});
+
 router.delete('/comments', (req, res, next) => {
     const { postId } = req.body;
     pool.query(`DELETE FROM comments WHERE post_id=${postId}`, [], (err, resp) => {
