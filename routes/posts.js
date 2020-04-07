@@ -26,11 +26,19 @@ router.put('/', (req, res, next) => {
     });
 });
 
+router.delete('/', (req, res, next) => {
+    const { postId } = req.body;
+    pool.query(`DELETE FROM posts WHERE pid=${postId}`, [], (err, resp) => {
+        if (err) return next(err);
+        res.json(resp.rows);
+    });
+});
+
 router.delete('/comments', (req, res, next) => {
     const { postId } = req.body;
     pool.query(`DELETE FROM comments WHERE post_id=${postId}`, [], (err, resp) => {
-            if (err) return next(err);
-            res.json(resp.rows);
+        if (err) return next(err);
+        res.json(resp.rows);
     });
 });
 
