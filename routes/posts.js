@@ -8,6 +8,15 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/user', (req, res, next) => {
+    const userId = String(req.query.userId);
+    pool.query(`SELECT * FROM posts 
+        WHERE user_id=${userId}`, (err, resp) => {
+        if (err) return next(err);
+        res.json(resp.rows);
+    });
+});
+
 router.post('/', (req, res, next) => {
     const { uid, title, body, username } = req.body;
     pool.query(`INSERT INTO posts(title, body, user_id, author, date_created)
