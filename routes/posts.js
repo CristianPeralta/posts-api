@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require("../db");
 
 router.get('/', (req, res, next) => {
-    pool.query("SELECT * FROM posts ORDER BY data_created DESC", (err, resp) => {
+    pool.query("SELECT * FROM posts ORDER BY date_created DESC", (err, resp) => {
         if (err) return next(err);
         res.json(resp.rows);
     });
