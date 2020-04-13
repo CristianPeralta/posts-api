@@ -3,7 +3,7 @@ CREATE TABLE users (
     username VARCHAR(255) UNIQUE,
     email VARCHAR(255),
     email_verified BOOLEAN,
-    data_created DATE,
+    date_created DATE,
     last_login DATE
 );
 

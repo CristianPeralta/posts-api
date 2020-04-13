@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pool = require("../db");
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     pool.query("SELECT * FROM posts ORDER BY data_created DESC", (err, resp) => {
+        if (err) return next(err);
         res.json(resp.rows);
     });
 });
@@ -60,7 +61,7 @@ router.get('/comments', (req, res) => {
 });
 
 router.post('/comments', (req, res, next) => {
-    const { postId, comment, userId, postId, username } = req.body;
+    const { postId, comment, userId, username } = req.body;
     pool.query(`INSERT INTO comments(comment, user_id, author, post_id, date_created)
         VALUES(${comment}, ${userId}, ${username}, ${postId}, NOW())`, [], (err, resp) => {
             if (err) return next(err);

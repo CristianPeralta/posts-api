@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const pool = require("../db");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -11,11 +12,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  const { nickname, email, emailVerified } = req.body;
+  const { username, email, emailVerified } = req.body;
   pool.query(`INSERT INTO users(username, email, email_verified, date_created)
-      VALUES(${nickname}, ${email}, ${emailVerified}, NOW()) ON CONFLICT DO NOTHING`, [], (err, resp) => {
+    VALUES('${username}', '${email}', '${emailVerified}', NOW()) ON CONFLICT DO NOTHING`, [], (err, resp) => {
+        if (err) return next(err);
+        pool.query(`SELECT * FROM users WHERE username='${username}'`, [], (err, resp) => {
           if (err) return next(err);
-          res.json(resp.rows);
+          return res.json(resp.rows[0]);
+        });
   });
 });
 
