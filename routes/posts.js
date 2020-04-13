@@ -53,8 +53,7 @@ router.delete('/comments', (req, res, next) => {
 });
 
 router.get('/comments', (req, res, next) => {
-    const postId = String(req.query.pid);
-    console.log('postId', postId)
+    const postId = Number(req.query.pid);
     pool.query(`SELECT * FROM comments 
         WHERE post_id=${postId} ORDER BY date_created DESC`, (err, resp) => {
             if (err) return next(err);
@@ -65,7 +64,7 @@ router.get('/comments', (req, res, next) => {
 router.post('/comments', (req, res, next) => {
     const { postId, comment, userId, username } = req.body;
     pool.query(`INSERT INTO comments(comment, user_id, author, post_id, date_created)
-        VALUES(${comment}, ${userId}, ${username}, ${postId}, NOW())`, [], (err, resp) => {
+        VALUES('${comment}', '${userId}', '${username}', '${postId}', NOW())`, [], (err, resp) => {
             if (err) return next(err);
             res.json(resp.rows);
     });
