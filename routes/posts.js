@@ -52,11 +52,13 @@ router.delete('/comments', (req, res, next) => {
     });
 });
 
-router.get('/comments', (req, res) => {
-    const postId = String(req.query.postId);
+router.get('/comments', (req, res, next) => {
+    const postId = String(req.query.pid);
+    console.log('postId', postId)
     pool.query(`SELECT * FROM comments 
-        WHERE post_id=${postId} ORDER BY data_created DESC`, (err, resp) => {
-        res.json(resp.rows);
+        WHERE post_id=${postId} ORDER BY date_created DESC`, (err, resp) => {
+            if (err) return next(err);
+            res.json(resp.rows);
     });
 });
 
