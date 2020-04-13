@@ -13,7 +13,7 @@ CREATE TABLE posts (
     body VARCHAR,
     user_id INT REFERENCES users(uid),
     author VARCHAR REFERENCES users(username),
-    data_created DATE
+    date_created DATE
 );
 
 CREATE TABLE comments (
@@ -22,5 +22,5 @@ CREATE TABLE comments (
     author VARCHAR REFERENCES users(username),
     post_id INT REFERENCES posts(pid),
     user_id INT REFERENCES users(uid),
-    data_created DATE
+    date_created DATE
 );
