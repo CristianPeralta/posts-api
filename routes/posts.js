@@ -29,7 +29,7 @@ router.post('/', (req, res, next) => {
 
 router.put('/', (req, res, next) => {
     const { uid, pid, title, body, username } = req.body;
-    pool.query(`UPDATE posts SET title=${title}, body=${body}, user_id=${uid}, author=${username}, date_created=NOW())
+    pool.query(`UPDATE posts SET title=${title}, body=${body}, user_id=${uid}, author=${username}, date_created=NOW()
         WHERE pid=${pid}`, [], (err, resp) => {
             if (err) return next(err);
             res.json(resp.rows);
@@ -73,7 +73,7 @@ router.post('/comments', (req, res, next) => {
 router.put('/comments', (req, res, next) => {
     const { cid, postId, comment, userId, username } = req.body;
     pool.query(`UPDATE comments SET
-        comment=${comment}, user_id=${userId}, post_id=${postId} author=${username}, date_created=NOW())
+        comment='${comment}', user_id=${userId}, post_id=${postId}, author='${username}', date_created=NOW()
         WHERE cid=${cid}`, [], (err, resp) => {
             if (err) return next(err);
             res.json(resp.rows);
