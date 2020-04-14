@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/user', (req, res, next) => {
-    const userId = String(req.query.userId);
+    const userId = Number(req.query.userId);
     pool.query(`SELECT * FROM posts 
         WHERE user_id=${userId}`, (err, resp) => {
         if (err) return next(err);
