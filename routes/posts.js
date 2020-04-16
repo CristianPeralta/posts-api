@@ -9,6 +9,16 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.put('/likes', (req, res, next) => {
+    const { uid } = req.body;
+    const pid = String(req.body.postId);
+    pool.query(`UPDATE posts SET like_user_id=like_user_id || ${[uid]}, likes=likes + 1
+        WHERE NOT (like_user_id @> ${[uid]}) AND pid=${pid}`, [], (err, resp) => {
+            if (err) return next(err);
+            res.json(resp.rows);
+    });
+});
+
 router.get('/user', (req, res, next) => {
     const userId = Number(req.query.userId);
     pool.query(`SELECT * FROM posts 
