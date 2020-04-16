@@ -80,6 +80,15 @@ router.put('/comments', (req, res, next) => {
     });
 });
 
+router.delete('/comment', (req, res, next) => {
+    const { cid } = req.body
+    pool.query(`DELETE FROM comments
+        WHERE cid=${cid}`, [], (err, resp) => {
+            if (err) return next(err);
+            res.json(resp.rows);
+    });
+});
+
 router.delete('/', (req, res, next) => {
     const { cId } = req.body;
     pool.query(`DELETE FROM comments WHERE cid=${cId}`, [], (err, resp) => {
