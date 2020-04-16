@@ -13,6 +13,8 @@ CREATE TABLE posts (
     body VARCHAR,
     user_id INT REFERENCES users(uid),
     author VARCHAR REFERENCES users(username),
+    like_user_id INT[] DEFAULT ARRAY[]::INT[],
+    likes INT DEFAULT 0,
     date_created DATE
 );
 
