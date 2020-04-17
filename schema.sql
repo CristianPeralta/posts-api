@@ -3,8 +3,8 @@ CREATE TABLE users (
     username VARCHAR(255) UNIQUE,
     email VARCHAR(255),
     email_verified BOOLEAN,
-    date_created DATE,
-    last_login DATE
+    date_created timestamp,
+    last_login timestamp
 );
 
 CREATE TABLE posts (
@@ -15,7 +15,7 @@ CREATE TABLE posts (
     author VARCHAR REFERENCES users(username),
     like_user_id INT[] DEFAULT ARRAY[]::INT[],
     likes INT DEFAULT 0,
-    date_created DATE
+    date_created timestamp
 );
 
 CREATE TABLE comments (
@@ -24,5 +24,5 @@ CREATE TABLE comments (
     author VARCHAR REFERENCES users(username),
     post_id INT REFERENCES posts(pid),
     user_id INT REFERENCES users(uid),
-    date_created DATE
+    date_created timestamp
 );
