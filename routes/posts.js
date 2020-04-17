@@ -13,7 +13,7 @@ router.put('/likes', (req, res, next) => {
     const { uid } = req.body;
     const pid = String(req.body.postId);
     pool.query(`UPDATE posts SET like_user_id=like_user_id || ${[uid]}, likes=likes + 1
-        WHERE NOT (${uid} IN like_user_id) AND pid=${pid}`, [], (err, resp) => {
+        WHERE NOT (like_user_id @> ARRAY[${uid}] AND pid=${pid})`, [], (err, resp) => {
             if (err) return next(err);
             res.json(resp.rows);
     });
