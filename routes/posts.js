@@ -30,11 +30,9 @@ router.get('/user', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
     const { uid, title, body, username } = req.body;
-
-    const vector = [title, body, username];
-
+    const tsVector = `to_tsvector('${title} ${body} ${username}')`;
     pool.query(`INSERT INTO posts(title, body, search_vector, user_id, author, date_created)
-        VALUES('${title}', '${body}', to_tsvector(${vector}), '${uid}', '${username}', NOW()::timestamp)`, [], (err, resp) => {
+        VALUES('${title}', '${body}', ${tsVector}, '${uid}', '${username}', NOW()::timestamp)`, [], (err, resp) => {
             if (err) return next(err);
             res.json(resp.rows);
     });
@@ -42,8 +40,9 @@ router.post('/', (req, res, next) => {
 
 router.get('/search', (req, res, next) => {
     const query = String(req.query.query);
+    const tsQuery = `to_tsquery('${query}')`;
     pool.query(`SELECT * FROM posts 
-        WHERE search_vector @@ to_tsquery('${query}')`, (err, resp) => {
+        WHERE search_vector @@ ${tsQuery}`, (err, resp) => {
         if (err) return next(err);
         res.json(resp.rows);
     });
