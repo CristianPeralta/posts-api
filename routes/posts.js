@@ -41,9 +41,9 @@ router.post('/', (req, res, next) => {
 });
 
 router.get('/search', (req, res, next) => {
-    const query = Number(req.query.query);
+    const query = String(req.query.query);
     pool.query(`SELECT * FROM posts 
-        WHERE search_vector @@ to_tsquery(${query})`, (err, resp) => {
+        WHERE search_vector @@ to_tsquery('${query}')`, (err, resp) => {
         if (err) return next(err);
         res.json(resp.rows);
     });
