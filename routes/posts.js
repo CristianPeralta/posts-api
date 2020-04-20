@@ -40,6 +40,15 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.get('/search', (req, res, next) => {
+    const query = Number(req.query.query);
+    pool.query(`SELECT * FROM posts 
+        WHERE search_vector @@ to_tsquery(${query})`, (err, resp) => {
+        if (err) return next(err);
+        res.json(resp.rows);
+    });
+});
+
 router.put('/', (req, res, next) => {
     const { uid, pid, title, body, username } = req.body;
     pool.query(`UPDATE posts SET title='${title}', body='${body}', user_id=${uid}, author='${username}', date_created=NOW()::timestamp
