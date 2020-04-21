@@ -4,8 +4,8 @@ const pool = require("../db");
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  const email = String(req.query.username);
-  pool.query(`SELECT * FROM users WHERE username=${username}`, [], (err, resp) => {
+  const username = String(req.query.username);
+  pool.query(`SELECT * FROM users WHERE username='${username}'`, [], (err, resp) => {
     if (err) return next(err);
     res.json(resp.rows);
   });

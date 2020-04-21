@@ -31,7 +31,7 @@ router.get('/user', (req, res, next) => {
 router.get('/username', (req, res, next) => {
     const username = String(req.query.username);
     pool.query(`SELECT * FROM posts 
-        WHERE username='${username}'`, (err, resp) => {
+        WHERE author='${username}'`, (err, resp) => {
         if (err) return next(err);
         res.json(resp.rows);
     });
