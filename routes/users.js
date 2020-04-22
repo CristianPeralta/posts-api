@@ -32,4 +32,13 @@ router.post('/message', (req, res, next) => {
   });
 });
 
+
+router.get('/message', function(req, res, next) {
+  const username = String(req.query.username);
+  pool.query(`SELECT * FROM messages WHERE message_to='${username}'`, [], (err, resp) => {
+    if (err) return next(err);
+    res.json(resp.rows);
+  });
+});
+
 module.exports = router;
