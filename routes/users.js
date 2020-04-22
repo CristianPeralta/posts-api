@@ -23,7 +23,7 @@ router.post('/', (req, res, next) => {
   });
 });
 
-router.post('/message', (req, res, next) => {
+router.post('/messages', (req, res, next) => {
   const { messageSender, messageTo, messageTitle, messageBody } = req.body;
   pool.query(`INSERT INTO messages(message_sender, message-to, message_title, message_body, date_created)
     VALUES('${messageSender}', '${messageTo}', '${messageTitle}', '${messageBody}', NOW())`, [], (err, resp) => {
@@ -33,11 +33,19 @@ router.post('/message', (req, res, next) => {
 });
 
 
-router.get('/message', function(req, res, next) {
+router.get('/messages', function(req, res, next) {
   const username = String(req.query.username);
   pool.query(`SELECT * FROM messages WHERE message_to='${username}'`, [], (err, resp) => {
     if (err) return next(err);
     res.json(resp.rows);
+  });
+});
+
+router.delete('/messages', (req, res, next) => {
+  const { mid } = req.body;
+  pool.query(`DELETE FROM messages WHERE mid=${mid}`, [], (err, resp) => {
+      if (err) return next(err);
+      res.json(resp.rows);
   });
 });
 
