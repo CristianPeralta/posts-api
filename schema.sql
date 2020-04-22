@@ -26,3 +26,12 @@ CREATE TABLE comments (
     user_id INT REFERENCES users(uid),
     date_created timestamp
 );
+
+CREATE TABLE messages (
+    mid SERIAL PRIMARY KEY,
+    message_sender VARCHAR(255) REFERENCES users(username),
+    message_to VARCHAR(255) REFERENCES users(username),
+    message_title VARCHAR(255),
+    message_body VARCHAR(255),
+    date_created timestamp
+);
