@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
 
 router.post('/messages', (req, res, next) => {
   const { messageSender, messageTo, messageTitle, messageBody } = req.body;
-  pool.query(`INSERT INTO messages(message_sender, message-to, message_title, message_body, date_created)
+  pool.query(`INSERT INTO messages(message_sender, message_to, message_title, message_body, date_created)
     VALUES('${messageSender}', '${messageTo}', '${messageTitle}', '${messageBody}', NOW())`, [], (err, resp) => {
         if (err) return next(err);
           return res.json(resp.rows[0]);
