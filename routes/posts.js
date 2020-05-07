@@ -5,7 +5,7 @@ const pool = require("../db");
 router.get('/', (req, res, next) => {
     pool.query("SELECT * FROM posts ORDER BY date_created DESC", (err, resp) => {
         if (err) return next(err);
-        res.json(resp.rows);
+        return res.status(200).json(resp.rows);
     });
 });
 
