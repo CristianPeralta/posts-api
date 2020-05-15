@@ -115,9 +115,9 @@ router.put('/comments', (req, res, next) => {
     const { cid, postId, comment, userId, username } = req.body;
     pool.query(`UPDATE comments SET
         comment='${comment}', user_id=${userId}, post_id=${postId}, author='${username}', date_created=NOW()::timestamp
-        WHERE cid=${cid}`, [], (err, resp) => {
+        WHERE cid=${cid} RETURNING *`, [], (err, resp) => {
             if (err) return next(err);
-            res.json(resp.rows);
+            res.json(resp.rows[0]);
     });
 });
 
