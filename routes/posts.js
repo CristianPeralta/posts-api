@@ -124,9 +124,9 @@ router.put('/comments', (req, res, next) => {
 router.delete('/comment', (req, res, next) => {
     const { cid } = req.body
     pool.query(`DELETE FROM comments
-        WHERE cid=${cid}`, [], (err, resp) => {
+        WHERE cid=${cid} RETURNING *`, [], (err, resp) => {
             if (err) return next(err);
-            res.json(resp.rows);
+            res.json(resp.rows[0]);
     });
 });
 
