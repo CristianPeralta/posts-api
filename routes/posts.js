@@ -20,10 +20,15 @@ router.get('/', (req, res, next) => {
 router.put('/likes', (req, res, next) => {
     const { uid } = req.body;
     const pid = String(req.body.postId);
+    console.log('req.body', req.body);
     pool.query(`UPDATE posts SET like_user_id=like_user_id || ${[uid]}, likes=likes + 1
-        WHERE NOT (like_user_id @> ARRAY[${uid}] AND pid=${pid})`, [], (err, resp) => {
+        WHERE NOT (like_user_id @> ARRAY[${uid}] AND pid=${pid}) RETURNING *`, [], (err, resp) => {
             if (err) return next(err);
-            res.json(resp.rows);
+            pool.query(`SELECT * FROM posts WHERE pid=${pid}`, [], (err, response) => {
+                if (err) return next(err);
+                console.log('req.row', resp.rows);
+                return res.json(response.rows[0]);
+            });
     });
 });
 
