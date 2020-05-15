@@ -13,7 +13,6 @@ router.get('/', (req, res, next) => {
     const query = `${select} ${where} ${orderBy}`;
     pool.query(query, (err, resp) => {
         if (err) return next(err);
-        console.log(resp.rows);
         return res.status(200).json(resp.rows);
     });
 });
@@ -103,10 +102,13 @@ router.get('/comments', (req, res, next) => {
 router.post('/comments', (req, res, next) => {
     const { postId, comment, userId, username } = req.body;
     pool.query(`INSERT INTO comments(comment, user_id, author, post_id, date_created)
-        VALUES('${comment}', '${userId}', '${username}', '${postId}', NOW()::timestamp)`, [], (err, resp) => {
-            if (err) return next(err);
-            res.json(resp.rows);
-    });
+        VALUES('${comment}', '${userId}', '${username}', '${postId}', NOW()::timestamp) RETURNING *`, [])
+        .then(resp => {
+            res.json(resp.rows[0]);
+        })
+        .catch(err => {
+            return next(err);
+        });
 });
 
 router.put('/comments', (req, res, next) => {
