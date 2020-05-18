@@ -3,10 +3,10 @@ const router = express.Router();
 const pool = require("../db");
 
 router.get('/', (req, res, next) => {
-    let where = '';
+    let where = 'WHERE';
     if (req.query.query) {
         const tsQuery = `to_tsquery('${String(req.query.query)}')`;
-        where = `WHERE search_vector @@ ${tsQuery}`;
+        where = `${where} search_vector @@ ${tsQuery}`;
     }
     if (req.query.username) {
         const username = String(req.query.username);
@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
     }
     const select = `SELECT * FROM posts `;
     const orderBy = `ORDER BY date_created DESC`;
-    const query = `${select} ${where} ${orderBy}`;
+    const query = `${select} ${where !== 'WHERE' ? where : ''} ${orderBy}`;
     pool.query(query, (err, resp) => {
         if (err) return next(err);
         return res.status(200).json(resp.rows);
