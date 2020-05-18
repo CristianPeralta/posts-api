@@ -8,6 +8,14 @@ router.get('/', (req, res, next) => {
         const tsQuery = `to_tsquery('${String(req.query.query)}')`;
         where = `WHERE search_vector @@ ${tsQuery}`;
     }
+    if (req.query.username) {
+        const username = String(req.query.username);
+        where = `${where} author='${username}`;
+    }
+    if (req.query.userId) {
+        const userId = Number(req.query.userId);
+        where = `${where} user_id='${userId}`;
+    }
     const select = `SELECT * FROM posts `;
     const orderBy = `ORDER BY date_created DESC`;
     const query = `${select} ${where} ${orderBy}`;
