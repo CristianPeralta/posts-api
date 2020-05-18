@@ -10,11 +10,11 @@ router.get('/', (req, res, next) => {
     }
     if (req.query.username) {
         const username = String(req.query.username);
-        where = `${where} author='${username}`;
+        where = `${where} author='${username}'`;
     }
     if (req.query.userId) {
         const userId = Number(req.query.userId);
-        where = `${where} user_id='${userId}`;
+        where = `${where} user_id='${userId}'`;
     }
     const select = `SELECT * FROM posts `;
     const orderBy = `ORDER BY date_created DESC`;
