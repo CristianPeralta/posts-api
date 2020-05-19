@@ -45,7 +45,7 @@ router.delete('/messages', (req, res, next) => {
   const { mid } = req.body;
   pool.query(`DELETE FROM messages WHERE mid=${mid}`, [], (err, resp) => {
       if (err) return next(err);
-      res.json(resp.rows);
+      res.json({ mid });
   });
 });
 
