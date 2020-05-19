@@ -91,7 +91,7 @@ router.delete('/', (req, res, next) => {
     const { postId } = req.body;
     pool.query(`DELETE FROM posts WHERE pid=${postId}`, [], (err, resp) => {
         if (err) return next(err);
-        res.json(resp.rows);
+        res.json({ pid: postId });
     });
 });
 
