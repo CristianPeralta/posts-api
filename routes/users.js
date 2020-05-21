@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   const username = String(req.query.username);
   pool.query(`SELECT * FROM users WHERE username='${username}'`, [], (err, resp) => {
     if (err) return next(err);
-    res.json(resp.rows);
+    res.json(resp.rows[0]);
   });
 });
 
