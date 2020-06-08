@@ -151,4 +151,15 @@ router.delete('/', (req, res, next) => {
     });
 });
 
+router.get('/:pid', (req, res, next) => {
+    const { pid } = req.params;
+    if (!pid) return res.status(400);
+    const query = `SELECT * FROM posts WHERE pid=${pid} LIMIT 1`;
+    pool.query(query, (err, resp) => {
+        if (err) return next(err);
+        if (!resp.rows.length) return res.status(404).send('Post not Found');
+        return res.status(200).json(resp.rows[0]);
+    });
+});
+
 module.exports = router;
