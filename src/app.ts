@@ -1,5 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors, { CorsOptions } from 'cors';
+import logger from 'morgan';
 
 const app: Application = express();
 
@@ -19,6 +20,7 @@ const options: CorsOptions = {
 };
 
 app.use(cors(options));
+app.use(logger('dev'));
 
 const getGreeting = (name: string): string => `Hello ${name}`;
 
