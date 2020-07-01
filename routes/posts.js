@@ -33,7 +33,6 @@ router.put('/likes', (req, res, next) => {
             if (err) return next(err);
             pool.query(`SELECT * FROM posts WHERE pid=${pid}`, [], (err, response) => {
                 if (err) return next(err);
-                console.log('req.row', resp.rows);
                 return res.json(response.rows[0]);
             });
     });
