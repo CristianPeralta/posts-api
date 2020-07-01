@@ -3,6 +3,10 @@ import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
+import indexRouter from './routes/index';
+import usersRouter from './routes/users';
+import postsRouter from './routes/posts';
+
 const app: Application = express();
 
 const allowedOrigins: Array<String> = [
@@ -26,10 +30,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const getGreeting = (name: string): string => `Hello ${name}`;
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    res.send(getGreeting('World!!'));
-});
-
-app.listen(3000, () => console.log('Server running, port: 3000'));
+app.listen(5000, () => console.log('Server running, port: 5000'));
