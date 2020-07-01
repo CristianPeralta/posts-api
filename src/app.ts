@@ -21,6 +21,8 @@ const options: CorsOptions = {
 
 app.use(cors(options));
 app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 const getGreeting = (name: string): string => `Hello ${name}`;
 
