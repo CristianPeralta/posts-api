@@ -1,5 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors, { CorsOptions } from 'cors';
+import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 const app: Application = express();
@@ -23,6 +24,7 @@ app.use(cors(options));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 const getGreeting = (name: string): string => `Hello ${name}`;
 
