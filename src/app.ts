@@ -35,3 +35,5 @@ app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
 
 app.listen(5000, () => console.log('Server running, port: 5000'));
+
+export default app;
