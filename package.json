@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
+    "test": "jest",
     "build": "rm -rf dist && tsc -p ."
   },
   "dependencies": {
