@@ -18,9 +18,11 @@ export function post(url: string, body: object){
     return httpRequest;
 }
 
-export function get(url: string, query: object){
+export function get(url: string, query?: object){
     const httpRequest = request(app).get(url);
-    httpRequest.query(query);
+    if (query) {
+        httpRequest.query(query);
+    }
     httpRequest.set('Accept', 'application/json')
     httpRequest.set('Origin', 'http://localhost:3000')
     return httpRequest;
