@@ -1,13 +1,14 @@
 import request from "supertest";
 import app from '../app';
 
+const user = {
+    username: 'usertest123',
+    email: 'usertest123@test.org',
+    emailVerified: false,
+};
+
 describe('Create a user', () => {
     it('succeeds with the required data', async () => {
-        const user = {
-            username: 'usertest123',
-            email: 'usertest123@test.org',
-            emailVerified: false,
-        };
         const response = await post(`/users`, user);
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
@@ -22,10 +23,16 @@ describe('Create a user', () => {
 
 describe('Get a user', () => {
     it('succeeds with correct query', async () => {
-        const query = { username: 'tes1111' };
+        const query = { username: 'usertest123' };
         const response = await get(`/users`, query);
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('uid');
+        expect(response.body).toHaveProperty('username', user.username);
+        expect(response.body).toHaveProperty('email', user.email);
+        expect(response.body).toHaveProperty('email_verified', false);
+        expect(response.body).toHaveProperty('date_created');
+        expect(response.body).toHaveProperty('last_login');
     });
 });
 
