@@ -11,6 +11,12 @@ describe('Create a user', () => {
         const response = await post(`/users`, user);
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('uid');
+        expect(response.body).toHaveProperty('username', user.username);
+        expect(response.body).toHaveProperty('email', user.email);
+        expect(response.body).toHaveProperty('email_verified', false);
+        expect(response.body).toHaveProperty('date_created');
+        expect(response.body).toHaveProperty('last_login');
     });
 });
 
