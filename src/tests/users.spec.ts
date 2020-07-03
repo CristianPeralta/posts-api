@@ -1,20 +1,38 @@
 import request from "supertest";
 import app from '../app';
 
-const user = {
+const firstUser = {
     username: 'usertest123',
     email: 'usertest123@test.org',
     emailVerified: false,
 };
 
-describe('Create a user', () => {
-    it('succeeds with the required data', async () => {
-        const response = await post(`/users`, user);
+const secondUser = {
+    username: 'usertest1234',
+    email: 'usertest1234@test.org',
+    emailVerified: false,
+};
+
+describe('Create users', () => {
+    it('succeeds with the required data for first user', async () => {
+        const response = await post(`/users`, firstUser);
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('uid');
-        expect(response.body).toHaveProperty('username', user.username);
-        expect(response.body).toHaveProperty('email', user.email);
+        expect(response.body).toHaveProperty('username', firstUser.username);
+        expect(response.body).toHaveProperty('email', firstUser.email);
+        expect(response.body).toHaveProperty('email_verified', false);
+        expect(response.body).toHaveProperty('date_created');
+        expect(response.body).toHaveProperty('last_login');
+    });
+
+    it('succeeds with the required data for second user', async () => {
+        const response = await post(`/users`, secondUser);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('uid');
+        expect(response.body).toHaveProperty('username', secondUser.username);
+        expect(response.body).toHaveProperty('email', secondUser.email);
         expect(response.body).toHaveProperty('email_verified', false);
         expect(response.body).toHaveProperty('date_created');
         expect(response.body).toHaveProperty('last_login');
@@ -28,8 +46,8 @@ describe('Get a user', () => {
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('uid');
-        expect(response.body).toHaveProperty('username', user.username);
-        expect(response.body).toHaveProperty('email', user.email);
+        expect(response.body).toHaveProperty('username', firstUser.username);
+        expect(response.body).toHaveProperty('email', firstUser.email);
         expect(response.body).toHaveProperty('email_verified', false);
         expect(response.body).toHaveProperty('date_created');
         expect(response.body).toHaveProperty('last_login');
