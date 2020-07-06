@@ -13,6 +13,13 @@ const secondUser = {
     emailVerified: false,
 };
 
+const firstMessage = {
+    messageSender: secondUser.username,
+    messageTo: secondUser.username,
+    messageTitle: 'first test message',
+    messageBody: 'first test body message',
+};
+
 describe('Create users', () => {
     it('succeeds with the required data for first user', async () => {
         const response = await post(`/users`, firstUser);
@@ -56,12 +63,6 @@ describe('Get a user', () => {
 
 describe('Create messages', () => {
     it('succeeds with the required data for send messages from user 1 to user 2', async () => {
-        const firstMessage = {
-            messageSender: secondUser.username,
-            messageTo: secondUser.username,
-            messageTitle: 'first test message',
-            messageBody: 'first test body message',
-        };
         const response = await post(`/users/messages`, firstMessage);
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
@@ -71,6 +72,19 @@ describe('Create messages', () => {
         expect(response.body).toHaveProperty('message_title',  firstMessage.messageTitle);
         expect(response.body).toHaveProperty('message_body', firstMessage.messageBody);
         expect(response.body).toHaveProperty('date_created');
+    });
+});
+
+describe('Get user messages', () => {
+    it('succeeds with the required username', async () => {
+        const query = {
+            username: firstMessage.messageSender,
+        };
+        const response = await get(`/users/messages`, query);
+        expect(response.status).toEqual(200);
+        console.log('asdsad', response.body);
+        expect(typeof response.body).toBe('array');
+        expect(response.body[0]).toHaveProperty('message_sender', query.username);
     });
 });
 
