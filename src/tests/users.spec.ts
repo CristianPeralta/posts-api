@@ -54,6 +54,20 @@ describe('Get a user', () => {
     });
 });
 
+describe('Create messages', () => {
+    it('succeeds with the required data for send messages from user 1 to user 2', async () => {
+        const firstMessage = {
+            messageSender: secondUser.username,
+            messageTo: secondUser.username,
+            messageTitle: 'first test message',
+            messageBody: 'first test body message',
+        };
+        const response = await post(`/users/messages`, firstMessage);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+    });
+});
+
 export function post(url: string, body: object){
     const httpRequest = request(app).post(url);
     httpRequest.send(body);
