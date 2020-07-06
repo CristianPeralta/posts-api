@@ -20,6 +20,8 @@ const firstMessage = {
     messageBody: 'first test body message',
 };
 
+let mid: number = 0;
+
 describe('Create users', () => {
     it('succeeds with the required data for first user', async () => {
         const response = await post(`/users`, firstUser);
@@ -67,6 +69,7 @@ describe('Create messages', () => {
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('mid');
+        mid = response.body.mid;
         expect(response.body).toHaveProperty('message_sender', firstMessage.messageSender);
         expect(response.body).toHaveProperty('message_to',  firstMessage.messageTo);
         expect(response.body).toHaveProperty('message_title',  firstMessage.messageTitle);
@@ -82,9 +85,20 @@ describe('Get user messages', () => {
         };
         const response = await get(`/users/messages`, query);
         expect(response.status).toEqual(200);
-        console.log('asdsad', response.body);
-        expect(typeof response.body).toBe('array');
+        expect(Array.isArray(response.body)).toEqual(true);
         expect(response.body[0]).toHaveProperty('message_sender', query.username);
+    });
+});
+
+describe('Delete a message', () => {
+    it('succeeds with the required mid', async () => {
+        const body = {
+            mid: mid,
+        };
+        const response = await deleteR(`/users/messages`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('mid', body.mid);
     });
 });
 
@@ -101,6 +115,14 @@ export function get(url: string, query?: object){
     if (query) {
         httpRequest.query(query);
     }
+    httpRequest.set('Accept', 'application/json')
+    httpRequest.set('Origin', 'http://localhost:3000')
+    return httpRequest;
+}
+
+export function deleteR(url: string, body?: object){
+    const httpRequest = request(app).delete(url);
+    httpRequest.send(body);
     httpRequest.set('Accept', 'application/json')
     httpRequest.set('Origin', 'http://localhost:3000')
     return httpRequest;
