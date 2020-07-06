@@ -65,6 +65,12 @@ describe('Create messages', () => {
         const response = await post(`/users/messages`, firstMessage);
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('mid');
+        expect(response.body).toHaveProperty('message_sender', firstMessage.messageSender);
+        expect(response.body).toHaveProperty('message_to',  firstMessage.messageTo);
+        expect(response.body).toHaveProperty('message_title',  firstMessage.messageTitle);
+        expect(response.body).toHaveProperty('message_body', firstMessage.messageBody);
+        expect(response.body).toHaveProperty('date_created');
     });
 });
 
