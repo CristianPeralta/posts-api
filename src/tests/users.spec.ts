@@ -160,4 +160,26 @@ describe('Get posts', () => {
             expect(response.body[0]).toHaveProperty('search_vector');
         }
     });
+    
+    it('Get posts by username', async () => {
+        const query = {
+            username: username,
+        };
+        const response = await get(`/posts`, query);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(Array.isArray(response.body)).toEqual(true);
+        if (response.body.length) {
+            expect(response.body[0]).toHaveProperty('pid');
+            expect(response.body[0]).toHaveProperty('title');
+            expect(response.body[0]).toHaveProperty('body');
+            expect(response.body[0].body.toLowerCase()).toEqual(expect.stringContaining('first'));
+            expect(response.body[0]).toHaveProperty('user_id');
+            expect(response.body[0]).toHaveProperty('author', query.username);
+            expect(response.body[0]).toHaveProperty('like_user_id');
+            expect(response.body[0]).toHaveProperty('likes');
+            expect(response.body[0]).toHaveProperty('date_created');
+            expect(response.body[0]).toHaveProperty('search_vector');
+        }
+    });
 });
