@@ -105,3 +105,17 @@ describe('Delete a message', () => {
     });
 });
 
+describe('Create a post', () => {
+    it('succeeds with correct post data', async () => {
+        const firstPost = {
+            uid: uid,
+            title: 'First post title',
+            body: 'First post body',
+            username: username,
+        };
+        const response = await post(`/posts`, firstPost);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('pid');
+    });
+});
