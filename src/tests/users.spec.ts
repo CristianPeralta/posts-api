@@ -20,6 +20,8 @@ const firstMessage = {
 };
 
 let mid: number = 0;
+let uid: number = 0;
+let username: string = '';
 
 describe('Create users', () => {
     it('succeeds with the required data for first user', async () => {
@@ -27,6 +29,8 @@ describe('Create users', () => {
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('uid');
+        uid = response.body.uid;
+        username = response.body.username;
         expect(response.body).toHaveProperty('username', firstUser.username);
         expect(response.body).toHaveProperty('email', firstUser.email);
         expect(response.body).toHaveProperty('email_verified', false);

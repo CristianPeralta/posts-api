@@ -67,9 +67,9 @@ router.post('/', (req, res, next) => {
     const { uid, title, body, username }: RequestData = req.body;
     const tsVector: string = `to_tsvector('${title} ${body} ${username}')`;
     pool.query(`INSERT INTO posts(title, body, search_vector, user_id, author, date_created)
-        VALUES('${title}', '${body}', ${tsVector}, '${uid}', '${username}', NOW()::timestamp)`, [], (err, resp) => {
+        VALUES('${title}', '${body}', ${tsVector}, '${uid}', '${username}', NOW()::timestamp) RETURNING *`, [], (err, resp) => {
             if (err) return next(err);
-            res.json(resp.rows);
+            res.json(resp.rows[0]);
     });
 });
 
