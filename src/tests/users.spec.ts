@@ -349,4 +349,15 @@ describe('Delete comments', () => {
         expect(Array.isArray(response.body)).toEqual(true);
         expect(response.body.length).toEqual(1);
     });
+
+    it('Delete all post comments', async () => {
+        const body = {
+            postId: pid,
+        };
+        const response = await deleteR(`/posts/comments`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(Array.isArray(response.body)).toEqual(true);
+        expect(response.body.length).toEqual(0);
+    });
 });
