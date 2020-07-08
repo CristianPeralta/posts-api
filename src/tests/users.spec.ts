@@ -279,6 +279,20 @@ describe('Comment a post', () => {
         cid = response.body.cid;
         expect(response.body).toHaveProperty('comment', body.comment);
     });
+
+    it('succeeds with correct second comment data', async () => {
+        const body = {
+            postId: pid,
+            userId: uid,
+            comment: 'Second comment',
+            username: username,
+        };
+        const response = await post(`/posts/comments`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('cid');
+        expect(response.body).toHaveProperty('comment', body.comment);
+    });
 });
 
 describe('Get post comments', () => {
