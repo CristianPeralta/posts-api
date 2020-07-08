@@ -93,9 +93,9 @@ router.put('/', (req: Request, res: Response, next: NextFunction) => {
     }
     const { uid, pid, title, body, username }: RequestData = req.body;
     pool.query(`UPDATE posts SET title='${title}', body='${body}', user_id=${uid}, author='${username}', date_created=NOW()::timestamp
-        WHERE pid=${pid}`, [], (err, resp) => {
+        WHERE pid=${pid} RETURNING *`, [], (err, resp) => {
             if (err) return next(err);
-            res.json(resp.rows);
+            res.json(resp.rows[0]);
     });
 });
 

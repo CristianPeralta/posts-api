@@ -241,3 +241,23 @@ describe('Give a like to a post', () => {
         expect(response.body.like_user_id).toEqual(expect.arrayContaining([uid]));
     });
 });
+
+
+
+describe('Update a post', () => {
+    it('succeeds with correct post data', async () => {
+        const body = {
+            uid: uid,
+            pid: pid,
+            title: 'Updated Post Title',
+            body: 'Updated post body',
+            username: username,
+        };
+        const response = await put(`/posts`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('pid', body.pid);
+        expect(response.body).toHaveProperty('title', body.title);
+        expect(response.body).toHaveProperty('body', body.body);
+    });
+});
