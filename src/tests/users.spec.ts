@@ -1,4 +1,4 @@
-import { post, get, deleteR } from './utils';
+import { post, get, put, deleteR } from './utils';
 
 const firstUser = {
     username: 'usertest123',
@@ -19,6 +19,7 @@ const firstMessage = {
     messageBody: 'first test body message',
 };
 
+let pid : number = 0;
 let mid: number = 0;
 let uid: number = 0;
 let username: string = '';
@@ -117,6 +118,7 @@ describe('Create a post', () => {
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('pid');
+        pid = response.body.pid;
     });
 });
 
@@ -194,8 +196,8 @@ describe('Get posts', () => {
             expect(response.body[0]).toHaveProperty('pid');
             expect(response.body[0]).toHaveProperty('title');
             expect(response.body[0]).toHaveProperty('body');
-            expect(response.body[0]).toHaveProperty('user_id');
-            expect(response.body[0]).toHaveProperty('author', query.userId);
+            expect(response.body[0]).toHaveProperty('user_id', query.userId);
+            expect(response.body[0]).toHaveProperty('author');
             expect(response.body[0]).toHaveProperty('like_user_id');
             expect(response.body[0]).toHaveProperty('likes');
             expect(response.body[0]).toHaveProperty('date_created');
@@ -223,5 +225,19 @@ describe('Get posts', () => {
             expect(response.body[0]).toHaveProperty('date_created');
             expect(response.body[0]).toHaveProperty('search_vector');
         }
+    });
+});
+
+describe('Give a like to a post', () => {
+    it('succeeds with correct postId', async () => {
+        const body = {
+            uid: uid,
+            postId: pid,
+        };
+        const response = await put(`/posts/likes`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('pid', body.postId);
+        expect(response.body.like_user_id).toEqual(expect.arrayContaining([uid]));
     });
 });
