@@ -20,7 +20,8 @@ const firstMessage = {
     messageBody: 'first test body message',
 };
 
-let pid : number = 0;
+let pid: number = 0;
+let cid: number = 0;
 let mid: number = 0;
 let uid: number = 0;
 let username: string = '';
@@ -275,6 +276,7 @@ describe('Comment a post', () => {
         expect(response.status).toEqual(200);
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('cid');
+        cid = response.body.cid;
         expect(response.body).toHaveProperty('comment', body.comment);
     });
 });
@@ -291,5 +293,22 @@ describe('Get post comments', () => {
         if (response.body.length) {
             expect(response.body[0]).toHaveProperty('post_id', query.pid);
         }
+    });
+});
+
+describe('Update a comment', () => {
+    it('succeeds with correct comment data', async () => {
+        const body = {
+            cid: cid,
+            postId: pid,
+            userId: uid,
+            comment: 'Updated comment',
+            username: username,
+        };
+        const response = await put(`/posts/comments`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('cid', body.cid);
+        expect(response.body).toHaveProperty('comment', body.comment);
     });
 });
