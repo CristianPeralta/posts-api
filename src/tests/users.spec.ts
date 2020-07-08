@@ -1,4 +1,5 @@
 import { post, get, put, deleteR } from './utils';
+import { report } from 'process';
 
 const firstUser = {
     username: 'usertest123',
@@ -262,7 +263,6 @@ describe('Update a post', () => {
     });
 });
 
-
 describe('Comment a post', () => {
     it('succeeds with correct comment data', async () => {
         const body = {
@@ -276,5 +276,20 @@ describe('Comment a post', () => {
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('cid');
         expect(response.body).toHaveProperty('comment', body.comment);
+    });
+});
+
+describe('Get post comments', () => {
+    it('succeeds with correct post id', async () => {
+        const query = {
+            pid: pid,
+        };
+        const response = await get(`/posts/comments`, query);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(Array.isArray(response.body)).toEqual(true);
+        if (response.body.length) {
+            expect(response.body[0]).toHaveProperty('post_id', query.pid);
+        }
     });
 });
