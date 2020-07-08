@@ -326,3 +326,16 @@ describe('Update a comment', () => {
         expect(response.body).toHaveProperty('comment', body.comment);
     });
 });
+
+
+describe('Delete comments', () => {
+    it('succeeds with correct comment id', async () => {
+        const body = {
+            cid: cid,
+        };
+        const response = await deleteR(`/posts/comment`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('cid', body.cid);
+    });
+});
