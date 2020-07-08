@@ -361,3 +361,15 @@ describe('Delete comments', () => {
         expect(response.body.length).toEqual(0);
     });
 });
+
+describe('Delete a post', () => {
+    it('succeeds with correct post id', async () => {
+        const body = {
+            postId: pid,
+        };
+        const response = await deleteR(`/posts`, body);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(response.body).toHaveProperty('pid', body.postId);
+    });
+});
