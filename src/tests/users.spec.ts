@@ -338,4 +338,15 @@ describe('Delete comments', () => {
         expect(typeof response.body).toBe('object');
         expect(response.body).toHaveProperty('cid', body.cid);
     });
+
+    it('Verify comments length', async () => {
+        const query = {
+            pid: pid,
+        };
+        const response = await get(`/posts/comments`, query);
+        expect(response.status).toEqual(200);
+        expect(typeof response.body).toBe('object');
+        expect(Array.isArray(response.body)).toEqual(true);
+        expect(response.body.length).toEqual(1);
+    });
 });
